@@ -1,0 +1,76 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.bng-navbar-menu {
+    background-color: #343a40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /*espaço entre o logo e o botão*/
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid #495057; /*linha inferior*/
+    z-index:1000;
+
+
+}
+
+.bng-navbar-menu div{
+    display:flex;
+    align-items: center;
+}
+
+.bng-navbar-menu img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.bng-navbar-menu h3{
+    font-size: 1.5em;
+    color: #dddddd;
+}
+
+/*Estilos para o menu lateral fixo (sidebar) */
+
+.sidebar{
+    width: 250px; /* Largura da barra lateral */
+    height: 100vh; /* Altura total da janela */
+    background-color: #343a40; /* Fundo escuro */
+    color: white; /* Texto branco */
+    padding: 100px 20px 20px; /* Espaçamento interno */
+    position: fixed; /* Fixa à esquerda do ecrã */
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/* Estilos para os links dentro da sidebar */
+.sidebar a {
+    display: flex; /* Organização horizontal interna */
+    align-items: center; /* Alinhamento vertical ao centro */
+    color: white; /* Cor do texto dos links */
+    text-decoration: none; /* Remove o sublinhado */
+    padding: 10px; /* Espaçamento interno */
+    border-radius: 5px; /* Cantos arredondados */
+    transition: background 0.3s; /* Animação ao passar o rato */
+}
+.sidebar a:hover {
+    background-color: rgb(57, 86, 179);
+}
+
+/* Ajuste do conteúdo para não ficar sob a navbar */
+.content {
+ margin-right: 250px; /* Afasta o conteúdo da sidebar (largura da sidebar) */
+ margin-top: 70px; /* Espaço para não ficar por baixo da navbar */
+ flex-grow: 1; /* Permite que o conteúdo cresça conforme o espaço disponível */
+ padding: 20px; /* Espaçamento interno para melhor leitura */
+} 
+
+
+
+
+
