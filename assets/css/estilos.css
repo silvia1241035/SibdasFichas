@@ -1,4 +1,5 @@
 *{
+/*HEAD*/
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -73,4 +74,108 @@
 
 
 
+
+.bng-navbar{
+    margin:0; /*Remove margens padrão*/
+    padding:0; /*Remove preenchimentos internos padrão*/
+    box-sizing:border-box; /*Largura e altura incluem a borda*/
+    font-family:Arial, Helvetica, sans-serif; /*Fonte do texto da página*/
+
+}
+.bng-navbar{
+    background-color: #343a40;
+    display:flex; /*Elementos alinhados em linha*/
+    align-items: center; /*Centaliza elementos na vertical*/
+    justify-content: space-between; /*Distribui os itens igualmente */
+    padding: 10px 20 px; /*Adiciona espaçamento interno */
+}
+
+.bng-navbar div {
+    display: flex;
+    align-items:center;
+}
+
+.bng-navbar img{
+    height: 50px; /* Ajusta a altura do logo*/
+    margin-right: 10px; /*Adiciona espaço entre o logo e o texto*/
+}
+
+.bng-navbar h3{
+    font-size: 1.5em; /*Define o tamanho do texto */
+    color: #dddddd; /*Cor do texto cinza claro */
+}
+
+/*Estilos para os links centrais da navegação*/
+.container-navegacao {
+    text-align: center;
+    padding: 20px; /*espaçamento interno*/
+}
+
+.container-navegacao a {
+    font-size: 1.5em; /* AUmenta tamanho dos links*/
+    margin: 0px 50px; /*Adiciona espaço horizontal entre os links*/
+    text-decoration: none; /*Remove sublinhado*/
+    color: #dddddd;
+}
+
+.container-navegacao a:hover {
+    color: #ffffff; /*Muda a cor a passar o rato*/
+}
+
+/*Estilos para o botão Área CLiente*/
+
+.nav-cliente a{
+    color: #dddddd; /*Cor do texto*/
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 10px;
+    border-radius: 5px; /*Bordas arredondadas*/
+    transition: background-color 0.3s; /*Efeito suave de transição*/
+}
+
+/*Efeito a passar o rato*/
+
+.nav-cliente a:hover {
+    background-color: #0056b3;
+}
+
+/*Estilos para o rodapé*/
+
+.footer-container {
+    display: flex;
+    background-color: #343a40;
+    color:white;
+    padding: 40px 20px;
+    flex-wrap: wrap; /*Itens responsivos*/
+}
+
+.footer-section {
+    flex:1; /*Secções com tamanhos iguais*/
+    min-width:250px; /*tamanho minimo de cada seccao*/
+    padding: 10 px;
+    text-align: center;
+}
+
+.footer-section strong{
+    font-size: 1.2rem; /*Tamanho da fonte dos títulos*/
+    display: block; /*Assim ocupa toda a largura*/
+    margin-bottom: 10px; 
+    color: #f8f9fa;
+}
+
+.footer-section p{
+    font-size: 1rem;
+    color: #d6d6d6;
+}
+
+/* Texto genérico */
+
+.container-texto-generico {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /*Elementos podem quebrar linhas em telas menores*/
+    gap: 20px;
+    padding: 40px;
+    text-align: center;
+}
 
