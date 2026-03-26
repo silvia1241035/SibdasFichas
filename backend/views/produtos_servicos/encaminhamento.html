@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISEP Ginásio</title>
+    <link rel="stylesheet" href="../../assets/fontawesome/all.min.css"> 
+</head>
+<!-- favicon -->
+ <link rel="shortcut icon" href="../../assets/img/gym125.png" type="image/png">
+
+ <!--folha de estilos css-->
+ <link rel="stylesheet" href="../../includes/css/admin.css">
+
+<body>
+    <!--Navbar-->
+    <header class="bng-navbar-menu">
+        <div>
+            <!--Logo e Nome -->
+            <a href="../../index.html">
+                <img src="../../assets/img/gym125_white.png" alt="Logo do ISEP Ginásio" height="50"> <!--alt é para descrever a imagem-->
+            </a>
+            <h3>ISEP Ginásio</h3>
+        </div>
+        <div>
+            <button>Utilizador</button>
+        </div>
+    </header>
+    <!--Sidebar-->
+    <aside class="sidebar">
+        <h4>Menu</h4>
+        <nav>
+            <a href="../clientes/lista.html">Clientes</a>
+            <a href="../agendamento/agendamento.html">Agendamento de treinos</a>
+            <a href="../plano_treino/plano_treino.html">Planos de treino</a>
+            <a href="../equipamentos/equipamentos.html">Equipamentos</a>
+            <a href="produtos_serviços.html">Produtos e Serviços</a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal-->
+    <main class="content">
+        <section>
+            <section>
+                <h2>Avaliação de Condições de Saúde</h2>
+                <p>Utilize este formulário para selecionar as condições de saúde relevantes do
+ cliente. As informações escolhidas irão gerar uma recomendação personalizada para o
+ plano de treino.</p>
+        </section>
+    </main>
+    <div class="form-wrapper">
+        <h2><strong><i class="fa-solid fa-dumbbell"></i> Avaliação de Condições de Saúde</strong></h2>
+        <hr>
+
+        <form oninput="avaliarCondicoes()">
+            <div>
+                <input type="checkbox" id="temProblemasCostas" name="condicao">
+                <label>Problemas de costas</label><br>
+                <label><input type="checkbox" id="estaGravida" name="condicao"> Grávida</label><br>
+                <label><input type="checkbox" id="temDiabetes" name="condicao"> Diabético/a</label>
+            </div>
+
+            <div class="form-group">
+                <label>Recomendação:</label>
+                <div id="mensagem" class="alert text-center"></div>
+            </div>
+        </form>
+    </div> 
+    <script src="../../includes/js/funcoes.js"></script>
+    
+</body>
+</html>
