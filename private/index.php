@@ -1,9 +1,13 @@
+<?php
+require_once __DIR__ . '/../config/config.php';
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISEP Ginásio</title>
+    <title><?php echo APP_NAME; ?></title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +31,7 @@
             <a href="index.html">
                 <img alt="Logo do ISEP Ginásio" height="50" src="assets/img/gym125_white.png"   class="me-3"> <!--alt é para descrever a imagem-->
             </a>
-            <h3 class="mb-0">ISEP Ginásio</h3>
+            <h3 class="mb-0"><?php echo APP_NAME; ?></h3>
             </div>
         
             <div class="col-6 text-end p-3">
@@ -59,7 +63,7 @@
     <!-- Conteúdo Principal-->
     <main class="col-md-9 col-lg-10 p-4">
         <section>
-            <h2>ISEP Ginásio</h2>
+            <h2><?php echo APP_NAME; ?></h2>
             <p>Escolha uma opção no menu lateral para continuar</p>
         </section>
     </main>
