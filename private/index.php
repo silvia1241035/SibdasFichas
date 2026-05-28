@@ -12,14 +12,20 @@ require_once __DIR__ . '/../config/config.php';
     // ----------------------------------------------------------------------------
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     // Se não for uma submissão do formulário, termina o script
-    exit('Acesso inválido');
+    header('Location: ../public/login.php');
+ // Encerra a execução do script imediatamente após o redirecionamento
+    return;
     }
     // Mostrar os dados recebidos pelo formulário através do método POST
     // O nome dos campos (entre aspas) deve ser igual ao atributo "name" no login.php
-    echo "Utilizador: " . $_POST['text_username'] . "<br>"; // Mostra o username inserido
-    echo "Password: " . $_POST['text_password']; // Mostra a password inserida
-    // Em produção, **nunca** se deve mostrar a password assim — isto é apenas para testes!
-    ?>
+    $username = isset($_POST['text_username']) ? $_POST['text_username'] : '';
+// O mesmo para o campo da password.
+    $password = isset($_POST['text_password']) ? $_POST['text_password'] : '';
+    // --------------------------------------------------------------------
+    // APRESENTAÇÃO DE DADOS ENVIADOS
+    // --------------------------------------------------------------------
+    echo "Utilizador: " . $username . "<br>";
+    echo "Password: " . $password;?>
 
 
     <?php include 'includes/header.php'; ?>
