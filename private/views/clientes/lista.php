@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="pt">
+    <?php require_once __DIR__ . '/../../../config/config.php';?>
 
     <?php include '../../includes/header.php'; ?>
 

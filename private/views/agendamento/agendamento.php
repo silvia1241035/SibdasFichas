@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt">
-<?php include '../../includes/header.php'; ?>
+<?php require_once __DIR__ . '/../../../config/config.php';?>
+
 <body>
+    <?php include '../../includes/header.php'; ?>
     <!--Navbar-->
     <?php include '../../includes/nav.php'; ?>
     <!--Sidebar-->
