@@ -10,7 +10,9 @@ require_once __DIR__ . '/../config/config.php';
     // Este ficheiro deve ser acedido apenas através de submissão de formulário (POST).
     // Se for acedido diretamente (por URL) recebe a informação de Acesso Inválido
     // ----------------------------------------------------------------------------
-    session_start();
+    require_once 'includes/funcoes.php';
+    start_session();
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     // Se não for uma submissão do formulário, termina o script
     header('Location: ../public/login.php');
@@ -69,7 +71,8 @@ require_once __DIR__ . '/../config/config.php';
     if (!$result['status']) {
     // Se o login for inválido, guarda uma mensagem de erro na sessão
     $_SESSION['server_error'] = 'Login inválido';
-
+    $_SESSION['utilizador'] = $username;
+    // Agora código da área privada
     // Redireciona o utilizador novamente para o formulário de login
     header('Location: ../public/login.php'); // ou 'login_form.php'
 
@@ -81,9 +84,7 @@ require_once __DIR__ . '/../config/config.php';
     // LOGIN BEM-SUCEDIDO: Guardar o utilizador na sessão
     // --------------------------------------------------------------------
     // Guarda o nome de utilizador na sessão para identificar o utilizador autenticado
-    $_SESSION['utilizador'] = $username;
-    // Agora código da área privada
-    ?>
+    
     
     ?>
 
