@@ -64,7 +64,7 @@ require_once __DIR__ . '/../config/config.php';
     // Simula o resultado que viria de uma verificação à base de dados
     // Neste caso, assume-se que o login é válido (status = 1)
     // Mais tarde, esta variável será substituída por um resultado real vindo da BD
-    $result['status'] = 0; // 1 = login válido, 0 = inválido
+    $result['status'] = 1; // 1 = login válido, 0 = inválido
     // Verifica se o status retornado indica login inválido
     if (!$result['status']) {
     // Se o login for inválido, guarda uma mensagem de erro na sessão
@@ -77,7 +77,12 @@ require_once __DIR__ . '/../config/config.php';
     return;
     }
     // Se o status for 1 (válido), o código continuará — aqui será futuramente criada a sessão do utilizador e o redirecionamento para a área privada.
-
+    // -------------------------------------------------------------------
+    // LOGIN BEM-SUCEDIDO: Guardar o utilizador na sessão
+    // --------------------------------------------------------------------
+    // Guarda o nome de utilizador na sessão para identificar o utilizador autenticado
+    $_SESSION['utilizador'] = $username;
+    // Agora código da área privada
     ?>
     
     ?>

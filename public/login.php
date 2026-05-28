@@ -26,6 +26,7 @@
     // Remove o erro da sessão após ser lido
     unset($_SESSION['server_error']);
     }
+    
     ?>
      
 
