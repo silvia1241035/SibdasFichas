@@ -1,17 +1,10 @@
+<?php require_once __DIR__ . '/../config/config.php';?>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISEP Ginásio</title>
-    <link rel="stylesheet" href="../frontend/assets/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="../frontend/assets/css/estilos.css">
-    <link rel="shortcut icon" href="../frontend/assets/img/gym125.png" type="image/png">
-    <link rel="stylesheet" href="../frontend/assets/img/fontawesome/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;700&display=swap" rel="stylesheet">
 
-</head>
-<body>
+<?php include '../private/includes/header.php'; ?>
+
     <script src="assets/bootstrap/bootstrap.bundle.min.js"></script>
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
@@ -20,8 +13,8 @@
                 <div class="card p-4">
 
                     <div class="d-flex align-items-center justify-content-center my-4">
-                        <img src="../frontend/assets/img/gym125.png">
-                        <h2><strong>ISEP-Ginásio</strong></h2>
+                        <img src="/isep-ginasio/private/assets/img/gym125.png" class="img_fluid me-3">
+                        <h2><strong><?php echo APP_NAME; ?></strong></h2>
                     </div>
 
                     <div class="row"> <!--cria uma linha no layout para as colunas-->
@@ -56,5 +49,5 @@
             </div>    
         </div>
     </div>
-</body>
-</html>
+    <?php include '../private/includes/footer.php'; ?>
+
