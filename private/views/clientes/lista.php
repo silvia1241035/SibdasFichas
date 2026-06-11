@@ -10,7 +10,25 @@ redirect_if_not_logged();?>
 
     <?php include '../../includes/header.php'; ?>
 
-    <?php include '../../includes/nav.php'; ?> 
+    <?php include '../../includes/nav.php'; ?>
+
+<?php
+try {
+ $ligacao = new PDO(
+ "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+ MYSQL_USERNAME,
+ MYSQL_PASSWORD
+ );
+ $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+ $resultados = $ligacao->query("SELECT * FROM clientes")->fetchAll(PDO::FETCH_OBJ);
+ $erro = '';
+} catch (PDOException $err) {
+ $erro = "Aconteceu um erro na ligação.";
+ $resultados = [];
+}
+// Fecha a ligação
+$ligacao = null; ?>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -30,7 +48,12 @@ redirect_if_not_logged();?>
             </div>
 
             <hr>
-            <p class="text-muted">Não existem clientes registados.</p>
+            <?php if (!empty($erro)) : ?>
+                <p class="text-center text-danger"><?= $erro ?></p>
+            <?php else : ?>
+                <?php if (count($resultados) == 0) : ?>
+                <p class="text-muted">Não existem clientes registados.</p>
+                <?php else : ?>
 
             <div class="table-responsive">
                 <table class="table table-bordered table-striped align-middle">
@@ -48,8 +71,9 @@ redirect_if_not_logged();?>
                     </thead>
 
                     <tbody>
+                        <?php foreach ($resultados as $cliente) : ?>
                         <tr>
-                            <td>[Nome Cliente]</td>
+                            <td><?= $cliente->nome ?></td> 
                             <td>[Sexo]</td>
                             <td>[data_Nasc]</td>
                             <td>[email]</td>
@@ -67,16 +91,17 @@ redirect_if_not_logged();?>
                                 </a>
                             </td>
                         </tr>
+                        <?php endforeach; ?>
                     </tbody>
 
                 </table>
             </div>
-
+            <?php endif; ?>
+        <?php endif; ?>    
         </main>
 
     </div>
 </div>
 
 <!-- Bootstrap JS -->
-<?php include '../../includes/footer.php'; ?>
-
+    <?php include '../../includes/footer.php'; ?>
