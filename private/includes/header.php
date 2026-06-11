@@ -10,3 +10,8 @@
 <link rel="stylesheet" href="/isep-ginasio/private/assets/bootstrap/bootstrap.min.css">
 <!-- Font Awesome (ícones) -->
 <link rel="stylesheet" href="/isep-ginasio/private/assets/fontawesome/all.min.css">
+<!-- jQuery -->
+<script src="/isep-ginasio/private/assets/jquery/jquery-3.6.0.min.js"></script>
+<!-- DataTables CSS + JS -->
+<link rel="stylesheet" href="/isep-ginasio/private/assets/datatables/datatables.min.css">
+<script src="/isep-ginasio/private/assets/datatables/datatables.min.js"></script> 
