@@ -14,17 +14,17 @@ redirect_if_not_logged();?>
 
 <?php
 try {
- $ligacao = new PDO(
- "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
- MYSQL_USERNAME,
- MYSQL_PASSWORD
- );
- $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
- $resultados = $ligacao->query("SELECT * FROM clientes")->fetchAll(PDO::FETCH_OBJ);
- $erro = '';
+    $ligacao = new PDO(
+    "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+    MYSQL_USERNAME,
+    MYSQL_PASSWORD
+    );
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $resultados = $ligacao->query("SELECT * FROM clientes")->fetchAll(PDO::FETCH_OBJ);
+    $erro = '';
 } catch (PDOException $err) {
- $erro = "Aconteceu um erro na ligação.";
- $resultados = [];
+    $erro = "Aconteceu um erro na ligação.";
+    $resultados = [];
 }
 // Fecha a ligação
 $ligacao = null; ?>
@@ -55,49 +55,50 @@ $ligacao = null; ?>
                 <p class="text-muted">Não existem clientes registados.</p>
                 <?php else : ?>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
 
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Nome</th>
-                            <th>Sexo</th>
-                            <th>Data nascimento</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                            <th>Sistema de Saúde</th>
-                            <th class="text-center">Ações</th>
-                        </tr>
-                    </thead>
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Sexo</th>
+                                    <th>Data nascimento</th>
+                                    <th>Email</th>
+                                    <th>Telefone</th>
+                                    <th>Sistema de Saúde</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
 
-                    <tbody>
-                        <?php foreach ($resultados as $cliente) : ?>
-                        <tr>
-                            <td><?= $cliente->nome ?></td> 
-                            <td>[Sexo]</td>
-                            <td>[data_Nasc]</td>
-                            <td>[email]</td>
-                            <td>[Telefone]</td>
-                            <td>[sistema_saude]</td>
-                            <td class="text-center">
-                                <a href="detalhes.html" class="btn btn-sm btn-outline-primary me-1">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="editar.html" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </a>
-                                <a href="apagar.html" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-
-                </table>
-            </div>
-            <?php endif; ?>
-        <?php endif; ?>    
+                            <tbody>
+                                <?php foreach ($resultados as $cliente) : ?>
+                                <tr>
+                                    <td><?= $cliente->nome ?></td> 
+                                    <td class="text-center">
+                                        <?= $cliente->sexo == 'm' ? 'Masculino' : 'Feminino' ?>
+                                    </td>
+                                    <td>[data_Nasc]</td>
+                                    <td>[email]</td>
+                                    <td>[Telefone]</td>
+                                    <td>[sistema_saude]</td>
+                                    <td class="text-center">
+                                        <a href="detalhes.html" class="btn btn-sm btn-outline-primary me-1">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                        <a href="editar.html" class="btn btn-sm btn-outline-warning me-1">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </a>
+                                        <a href="apagar.html" class="btn btn-sm btn-outline-danger">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php endif; ?>
+                <?php endif; ?>   
         </main>
 
     </div>
