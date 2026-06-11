@@ -1,11 +1,20 @@
-<!DOCTYPE html>
-<html lang="pt">
 
 <?php
+    require_once __DIR__ . '/../../includes/funcoes.php';
+    redirect_if_not_logged();?>
+// Verificar se o formulário foi submetido
+<?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
+ // 1. Recolher dados
+ $nome = $_POST["nome_cliente"] ?? "";
 
-require_once __DIR__ . '/../../includes/funcoes.php';
-redirect_if_not_logged();?>
+ // Imprimir os dados recebidos (para teste)
+ echo "<p>Nome recebido: $nome</p>";
+ // 2. Validar os dados
+ // 3. Se não houver erros, guardar na base de dados
+} ?>
 <?php require_once __DIR__ . '/../../../config/config.php';?>
+<!DOCTYPE html>
+<html lang="pt">
 <?php include '../../includes/header.php'; ?>
 <!-- favicon -->
  <link rel="shortcut icon" href="../../assets/img/gym125.png" type="image/png">
