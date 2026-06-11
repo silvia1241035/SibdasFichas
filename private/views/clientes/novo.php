@@ -5,12 +5,40 @@
 // Verificar se o formulário foi submetido
 <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
  // 1. Recolher dados
- $nome = $_POST["nome_cliente"] ?? "";
+    $nome = $_POST["nome_cliente"] ?? "";
+    $morada = $_POST["morada_cliente"] ?? "";
+    $cp = $_POST["cp_cliente"] ?? "";
+    $cidade = $_POST["cid_cliente"] ?? "";
+    $telefone = $_POST["tel_cliente"] ?? "";
+    $email = $_POST["email_cliente"] ?? "";
+    $sexo = $_POST["radio_gender"] ?? "";
+    $dnasc = $_POST["dnasc_cliente"] ?? "";
+    $estado = $_POST["estaciv_cliente"] ?? "";
+    $sistema = $_POST["campo_opcao"] ?? "";
+    $profissao = $_POST["profissao_cliente"] ?? "";
+    // 2. Imprimir os dados recebidos (para teste)
+    echo "<p><strong>Dados recebidos:</strong> Nome: $nome
+| Morada: $morada | Código Postal: $cp | Cidade: $cidade
+| Telefone: $telefone | Email: $email | Sexo: " . ($sexo == 'm' ? 'Masculino' : 'Feminino') . "
+| Data de nascimento: $dnasc | Estado civil: $estado | Sistema de Saúde: $sistema
 
- // Imprimir os dados recebidos (para teste)
- echo "<p>Nome recebido: $nome</p>";
- // 2. Validar os dados
- // 3. Se não houver erros, guardar na base de dados
+| Profissão: $profissao</p>";
+    // Imprimir os dados recebidos (para teste)
+    echo "<p>Nome recebido: $nome</p>";
+    // 2. Validar os dados
+    $nome = trim($nome);
+// 1. Verificar se o campo está vazio
+    if (empty($nome)) {
+        $erros[] = "O campo Nome é obrigatório.";
+    }
+    // 2. Verificar se contém apenas números ou mistura de letras com números
+    elseif (preg_match('/\d/', $nome)) {
+        $erros[] = "O campo Nome não pode conter números.";
+    } 
+    echo "<pre>"; // torna mais legível no browser
+        print_r($erros);
+        echo "</pre>"; 
+  // 3. Se não houver erros, guardar na base de dados
 } ?>
 <?php require_once __DIR__ . '/../../../config/config.php';?>
 <!DOCTYPE html>

@@ -42,7 +42,7 @@ $ligacao = null; ?>
                     <i class="fa-solid fa-address-book me-2"></i>
                     <strong>Listagem de Clientes</strong>
                 </h2>
-                <a href="novo.html" class="btn btn-success">
+                <a href="novo.php" class="btn btn-success">
                     <i class="fa-solid fa-plus me-1"></i> Novo cliente
                 </a>
             </div>
