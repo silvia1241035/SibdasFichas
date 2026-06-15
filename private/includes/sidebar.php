@@ -4,7 +4,7 @@
         <a href="views/clientes/lista.php" class="nav-link text-white px-0 mb-2 d-block">
             <i class="fas fa-users me-2"></i> Clientes
         </a>
-        <a href="views/agendamento/agendamento.php class="nav-link text-white px-0 mb-2 d-block">
+        <a href="views/agendamento/agendamento.php" class="nav-link text-white px-0 mb-2 d-block">
             <i class="fas fa-calendar-alt me-2"></i> Agendamento de treinos
         </a>
         <a href="views/planos/planos.php" class="nav-link text-white px-0 mb-2 d-block">
