@@ -2,8 +2,10 @@
 <?php
     require_once __DIR__ . '/../../includes/funcoes.php';
     redirect_if_not_logged();?>
-// Verificar se o formulário foi submetido
-<?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
+<?php
+$erros = [];
+$erro_sistema = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
  // 1. Recolher dados
     $nome = $_POST["nome_cliente"] ?? "";
     $morada = $_POST["morada_cliente"] ?? "";
@@ -19,7 +21,18 @@
     // 2. Imprimir os dados recebidos (para teste)
     // Imprimir os dados recebidos (para teste)
     // 2. Validar os dados
+    $erros = []; // para erros de validação
+    $erro_sistema = "";
+
     $nome = trim($nome);
+    $morada = trim($morada);
+    $cp = trim($cp);
+    $cidade = trim($cidade);
+    $telefone = trim($telefone);
+    $email = trim($email);
+    $estado = trim($estado);
+    $sistema = trim($sistema);
+    $profissao = trim($profissao);
 // 1. Verificar se o campo está vazio
     if (empty($nome)) {
         $erros[] = "O campo Nome é obrigatório.";
@@ -58,13 +71,67 @@
     $erros[] = "O campo Género é obrigatório.";
     }
 
+    $dnasc = $_POST["dnasc_cliente"] ?? "";
+    $dnasc = trim($dnasc);
+    if (empty($dnasc)) {
+    $erros[] = "O campo Data de Nascimento é obrigatório.";
+    }
+    // Validação de formato: AAAA-MM-DD
+    elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dnasc)) {
+    $erros[] = "Formato de data inválido. Use AAAA-MM-DD.";
+    }
+    // Verificar se é uma data real (ex: não aceitar 2024-02-31)
+    else {
+    $partes = explode('-', $dnasc);
+    if (!checkdate((int)$partes[1], (int)$partes[2], (int)$partes[0])) {
+    $erros[] = "Data de nascimento inválida.";
+    }
+    } 
+
     if (empty($estado)) $erros[] = "Estado civil não selecionado.";
     if (empty($sistema)) $erros[] = "Sistema de saúde não preenchido.";
     if (empty($profissao)) $erros[] = "Profissão é obrigatória.";
     echo "<pre>"; // torna mais legível no browser
     print_r($erros);
     echo "</pre>";
+     
   // 3. Se não houver erros, guardar na base de dados
+    // Normalizar entrada
+    $nome = ucwords(strtolower($nome)); // Pedro Santos
+    $cidade = ucfirst(strtolower($cidade)); // Porto
+    $email = strtolower($email); // guimas@email.pt
+    $sistema = strtoupper($sistema); // ADSE
+    $profissao = ucwords(strtolower($profissao));
+/*
+    echo "<p><strong>Dados normalizados:</strong></p>";
+    echo "<ul>";
+    echo "<li>Nome: $nome</li>";
+    echo "<li>Cidade: $cidade</li>";
+    echo "<li>Email: $email</li>";
+    echo "<li>Sistema de Saúde: $sistema</li>";
+    echo "<li>Profissão: $profissao</li>";
+    echo "</ul>";
+    */
+
+    if (empty($erros)) {
+        try {
+        $ligacao = new PDO(
+        "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
+        );
+        $ligacao->exec("INSERT INTO clientes (
+        nome, sexo, data_nascimento, email, telefone, morada, cidade, cliente_ativo, sistema_saude
+        ) VALUES (
+        '$nome', '$sexo', '$dnasc', '$email', '$telefone', '$morada', '$cidade', '1', '$sistema'
+        )");
+        header('Location: lista.php');
+        exit;
+        } catch (PDOException $err) {
+        $erro_sistema = "Erro ao gravar os dados: " . $err->getMessage();
+        }
+        $ligacao = null;
+        }
 } ?>
 <?php require_once __DIR__ . '/../../../config/config.php';?>
 <!DOCTYPE html>
@@ -99,7 +166,7 @@
                             <div class="col-12">
                                 <label for="texto_nome" class="form-label">Nome Completo</label>
                                 <input type="text" name="nome_cliente" class="form-control"
-                                    value="<?=  $_POST['nome_cliente'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($_POST['nome_cliente'] ?? '') ?>">
                             </div>
                             <div class="col-12">
                                 <label for="texto_endereco" class="form-label">Morada <small>(NºPorta, Andar)</small></label>
@@ -123,7 +190,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="texto_email" class="form-label">Email</label>
-                                <input type="email" name="email_cliente" class="form-control" value="<?= $_POST['email_cliente'] ?? '' ?>">
+                                <input type="email" name="email_cliente" class="form-control" value="<?= htmlspecialchars($_POST['email_cliente'] ?? '') ?>">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -142,7 +209,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="texto_dnasc" class="form-label">Data de nascimento</label>
-                            <input type="text" class="form-control" id="texto_dnasc" name="dnasc_cliente" required>
+                            <input type="text" class="form-control" id="data_nasc" name="dnasc_cliente" value="<?= htmlspecialchars($_POST['dnasc_cliente'] ?? '') ?>" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
@@ -172,7 +239,7 @@
  
        <!--Botões-->
                         <div class="d-flex justify-content-end gap-2 mb-4">
-                            <a href="lista.html" class="btn btn-outline-secondary">
+                            <a href="lista.php" class="btn btn-outline-secondary">
                                 <i class="fa-solid fa-xmark me-1"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary">
@@ -180,13 +247,31 @@
                             </button>
                         </div>
      <!-- Área de erros -->
-                        <div class="alert alert-danger text-center" role="alert">
-                            • Erro
-                        </div>
+                        <?php if (!empty($erros)): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Foram encontrados os seguintes erros:</strong>
+                                <ul class="mb-0">
+                                    <?php foreach ($erros as $erro): ?>
+                                        <li><?= htmlspecialchars($erro) ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($erro_sistema)): ?>
+                            <div class="alert alert-danger">
+                                <strong>Erro:</strong>
+                                <p><?= htmlspecialchars($erro_sistema) ?></p>
+                            </div>
+                        <?php endif; ?>
                     </form>
                 </div>
             </div>
         </div>
     </main>
     </div>    
-<?php include '../../includes/footer.php'; ?>
+    <?php include '../../includes/footer.php'; ?>
+    <script>
+    flatpickr("#data_nasc", {
+    dateFormat: "Y-m-d"
+    });
+    </script> 

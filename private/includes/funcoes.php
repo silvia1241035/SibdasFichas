@@ -1,4 +1,4 @@
-// Inicia a sessão se ainda não estiver iniciada
+
 <?php
 require_once __DIR__ . '/../../config/config.php';
 function start_session()
