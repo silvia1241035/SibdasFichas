@@ -16,27 +16,68 @@ if (!$idClient || !is_numeric($idClient)) {
     header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');
     exit;
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $novoNome = $_POST['nome'] ?? '';
+    $novoEmail = $_POST['email_cliente'] ?? '';
+    $novaMorada = $_POST['morada_cliente'] ?? '';
+    $novoTelefone = $_POST['tel_cliente'] ?? '';
+    if (empty(trim($novoNome))) {
+    $erro = "O nome não pode estar vazio.";
+    } else {
+        try {
+            $ligacao = new PDO(
+                "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",  MYSQL_USERNAME,
+                MYSQL_PASSWORD
+            );
+            $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $ligacao->prepare("
+                UPDATE clientes 
+                SET nome = :nome,
+                    email = :email,
+                    morada = :morada,
+                    telefone = :telefone
+                WHERE id = :id
+            "); 
+            $stmt->bindParam(':nome', $novoNome, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $novoEmail, PDO::PARAM_STR);
+            $stmt->bindParam(':morada', $novaMorada, PDO::PARAM_STR);
+            $stmt->bindParam(':telefone', $novoTelefone, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $idClient, PDO::PARAM_INT);
+            $stmt->execute();
+
+            header('Location: lista.php');
+            exit;
+
+        } catch (PDOException $err) {
+            $erro = "Erro ao atualizar o nome: " . $err->getMessage();
+        }
+    }
+}
+
+// Ir buscar os dados do cliente
 try {
     $ligacao = new PDO(
-    "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",  MYSQL_USERNAME,
-    MYSQL_PASSWORD
+        "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
     );
-    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  // Preparar e executar a query com segurança
-    $stmt = $ligacao->prepare("SELECT * FROM clientes WHERE id = :id");  $stmt->bindParam(':id', $idClient, PDO::PARAM_INT);
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $ligacao->prepare("SELECT * FROM clientes WHERE id = :id");
+    $stmt->bindParam(':id', $idClient, PDO::PARAM_INT);
     $stmt->execute();
     $cliente = $stmt->fetch(PDO::FETCH_OBJ);
-    // Se não encontrou o cliente, redireciona
     if (!$cliente) {
-    header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');  exit;
+        header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');
+        exit;
     }
-    //$erro = ''; apagar senao o erro nao e exibido
 } catch (PDOException $err) {
     $erro = "Erro na ligação à base de dados.";
     $cliente = null;
 }
-// Fecha a ligação
 $ligacao = null;
-echo ($idClient);
 ?>
 
 <!DOCTYPE html>
@@ -66,34 +107,35 @@ echo ($idClient);
                     <h2 class="mb-4"><strong><i class="fa-solid fa-pen-to-square me-2"></i> Atualização de Dados CLIENTES</strong></h2> 
                     <hr>
                     
-                    <form action="#" method="post" novalidate>
+                    <form action="editar.php?id_cliente=<?= urlencode($idClientEncrypted) ?>" method="post" novalidate>
  <!-- Linhas e colunas com campos organizados -->
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label for="texto_nome" class="form-label">Nome Completo</label>
-                                <input type="text" class="form-control" id="texto_nome" name="nome_cliente" value="Ana Beatriz Ferreira" required>
+                                <input type="text" class="form-control" id="texto_nome" name="nome" value="<?= htmlspecialchars($cliente->nome) ?>" required> 
                             </div>
                             <div class="col-12">
                                 <label for="texto_endereco" class="form-label">Morada <small>(NºPorta, Andar)</small></label>
-                                <input type="text" class="form-control" id="texto_endereco" name="morada_cliente" value="Rua Clotilde Ferreira da Cruz">
+                                <input type="text" class="form-control" id="texto_endereco" name="morada_cliente"value="<?= htmlspecialchars($cliente->morada) ?>">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label for="texto_cp" class="form-label">Código Postal</label>
-                                <input type="text" class="form-control" id="texto_cp" name="cp_cliente" value="4470-163" required>
+                                <input type="text" class="form-control" id="texto_cp" name="cp_cliente" value="<?= htmlspecialchars($cliente->cp) ?>">
                             </div>
                             <div class="col-md-3">
                                 <label for="texto_cidade" class="form-label">Cidade</label>
-                                <input type="text" class="form-control" id="texto_cidade" name="cid_cliente" value="Maia" required>
-                            </div>
+                                <input type="text" class="form-control" id="texto_cidade" name="cid_cliente"value="<?= htmlspecialchars($cliente->cidade) ?>" required> 
+                                </div>
                             <div class="col-md-3">
                                 <label for="texto_cliente" class="form-label">Telefone</label>
-                                <input type="text" class="form-control" id="texto_cliente" name="tel_cliente" value="913184498" required>
+                                <input type="text" class="form-control" id="texto_cliente" name="tel_cliente"value="<?= htmlspecialchars($cliente->telefone) ?>" required>
+                            
                             </div>
                             <div class="col-md-3">
                                 <label for="texto_email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="texto_email" name="email_cliente" value="sadasdasda@gmail.com" required>
+                                <input type="email" class="form-control" id="texto_email" name="email_cliente"value="<?= htmlspecialchars($cliente->email) ?>" required> 
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -101,18 +143,18 @@ echo ($idClient);
                                 <label class="form-label">Sexo</label>
                                 <div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="radio_gender" id="radio_m" value="m">
+                                        <input class="form-check-input" type="radio" name="radio_gender" id="radio_m" value="m" <?= $cliente->sexo == 'm' ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="radio_m">Masculino</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="radio_gender" id="radio_f" value="f" checked>
+                                    <input class="form-check-input" type="radio" name="radio_gender" id="radio_f" value="f" <?= $cliente->sexo == 'f' ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="radio_f">Feminino</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="texto_dnasc" class="form-label">Data de nascimento</label>
-                            <input type="text" class="form-control" id="texto_dnasc" name="dnasc_cliente" required>
+                            <input type="text" class="form-control" id="texto_dnasc" name="dnasc_cliente" value="<?= date('Y-m-d', strtotime($cliente->data_nascimento)) ?>" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
@@ -126,7 +168,7 @@ echo ($idClient);
                             </div>
                             <div class="col-md-4">
                                 <label for="texto_SSaude" class="form-label">Sistema de Saúde</label>
-                                <input type="text" class="form-control" id="texto_SSaude" name="campo_opcao" list="sistemasaude">
+                                <input type="text" class="form-control" id="texto_SSaude" name="campo_opcao" value="<?= htmlspecialchars($cliente->sistema_saude) ?>" list="sistemasaude">
                                 <datalist id="sistemasaude">
                                     <option value="SNS">
                                     <option value="ADSE">
@@ -151,8 +193,11 @@ echo ($idClient);
                             </button>
                         </div>
      <!-- Área de erros -->
-                        <div class="alert alert-danger text-center" role="alert">
-                            • Erro
+                            <?php if (!empty($erro)): ?>
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <?= htmlspecialchars($erro) ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </form>
                 </div>
