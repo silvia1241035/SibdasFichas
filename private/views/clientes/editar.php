@@ -7,9 +7,35 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
 }
 $idClient = $_GET['id_cliente'] ?? null;
 if (!$idClient) {
- header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');
- exit;
+    header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');
+    exit;
 }
+$idClientEncrypted = $_GET['id_cliente'] ?? null;
+$idClient = aes_decrypt($idClientEncrypted);
+if (!$idClient || !is_numeric($idClient)) {
+    header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');
+    exit;
+}
+try {
+    $ligacao = new PDO(
+    "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",  MYSQL_USERNAME,
+    MYSQL_PASSWORD
+    );
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  // Preparar e executar a query com segurança
+    $stmt = $ligacao->prepare("SELECT * FROM clientes WHERE id = :id");  $stmt->bindParam(':id', $idClient, PDO::PARAM_INT);
+    $stmt->execute();
+    $cliente = $stmt->fetch(PDO::FETCH_OBJ);
+    // Se não encontrou o cliente, redireciona
+    if (!$cliente) {
+    header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');  exit;
+    }
+    //$erro = ''; apagar senao o erro nao e exibido
+} catch (PDOException $err) {
+    $erro = "Erro na ligação à base de dados.";
+    $cliente = null;
+}
+// Fecha a ligação
+$ligacao = null;
 echo ($idClient);
 ?>
 
