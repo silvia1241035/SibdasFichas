@@ -33,71 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cidade = trim($cidade);
     $telefone = trim($telefone);
     $email = trim($email);
+    $sexo = trim($sexo);
+    $dnasc = trim($dnasc);
     $estado = trim($estado);
     $sistema = trim($sistema);
     $profissao = trim($profissao);
-// 1. Verificar se o campo está vazio
-    if (empty($nome)) {
-        $erros[] = "O campo Nome é obrigatório.";
-    }
-    // 2. Verificar se contém apenas números ou mistura de letras com números
-    elseif (preg_match('/\d/', $nome)) {
-        $erros[] = "O campo Nome não pode conter números.";
-    } 
-    if (empty($morada)) $erros[] = "O campo Morada é obrigatório.";
-// Verificar se o campo está vazio
-    if (empty($cp)) {
-    $erros[] = "O campo Código Postal é obrigatório.";
-    }
-    // Verificar se o formato está correto (0000-000)
-    elseif (!preg_match('/^\d{4}-\d{3}$/', $cp)) {
-    $erros[] = "Código Postal inválido (ex: 4000-007).";
-    }
-    if (empty($cidade)) $erros[] = "O campo Cidade é obrigatório.";
-    // Verificar se o campo está vazio
-    if (empty($telefone)) {
-    $erros[] = "O campo Telefone é obrigatório.";
-    }
-    // Verificar se o número de telefone é válido (ex: 912345678)
-    elseif (!preg_match('/^9\d{8}$/', $telefone)) {
-    $erros[] = "O número de telefone não é válido. Deve começar por 9 e ter 9 dígitos.";
-    }
-    // Verificar se o campo está vazio
-    if (empty($email)) {
-    $erros[] = "O campo Email é obrigatório.";
-    }
-    // Verificar se o formato do email é válido
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $erros[] = "O endereço de email não é válido.";
-    }
-    if (empty($_POST['radio_gender'])) {
-    $erros[] = "O campo Género é obrigatório.";
-    }
+    $erros = array_merge(
+        validar_nome($nome),
+        validar_morada($morada),
+        validar_cp($cp),
+        validar_cidade($cidade),
+        validar_telefone($telefone),
+        validar_email($email),
+        validar_sexo($sexo),
+        validar_data_nascimento($dnasc),
+        validar_estado_civil($estado),
+        validar_sistema_saude($sistema),
+        validar_profissao($profissao)
+    );
 
-    $dnasc = $_POST["dnasc_cliente"] ?? "";
-    $dnasc = trim($dnasc);
-    if (empty($dnasc)) {
-    $erros[] = "O campo Data de Nascimento é obrigatório.";
-    }
-    // Validação de formato: AAAA-MM-DD
-    elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dnasc)) {
-    $erros[] = "Formato de data inválido. Use AAAA-MM-DD.";
-    }
-    // Verificar se é uma data real (ex: não aceitar 2024-02-31)
-    else {
-    $partes = explode('-', $dnasc);
-    if (!checkdate((int)$partes[1], (int)$partes[2], (int)$partes[0])) {
-    $erros[] = "Data de nascimento inválida.";
-    }
-    } 
-
-    if (empty($estado)) $erros[] = "Estado civil não selecionado.";
-    if (empty($sistema)) $erros[] = "Sistema de saúde não preenchido.";
-    if (empty($profissao)) $erros[] = "Profissão é obrigatória.";
-    echo "<pre>"; // torna mais legível no browser
-    print_r($erros);
-    echo "</pre>";
-     
   // 3. Se não houver erros, guardar na base de dados
     // Normalizar entrada
     $nome = ucwords(strtolower($nome)); // Pedro Santos

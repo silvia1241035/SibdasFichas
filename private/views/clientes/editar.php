@@ -25,7 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $novaMorada = $_POST['morada_cliente'] ?? '';
     $novoTelefone = $_POST['tel_cliente'] ?? '';
 
-    $erros = validar_nome($novoNome);
+    $erros = array_merge(
+        validar_nome($novoNome),
+        validar_email($novoEmail),
+        validar_morada($novaMorada),
+        validar_telefone($novoTelefone)
+    );
 
     if (!empty($erros)) {
         $erro = implode(' ', $erros);
