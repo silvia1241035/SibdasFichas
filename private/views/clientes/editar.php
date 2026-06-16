@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/funcoes.php';
 redirect_if_not_logged();
+require_once __DIR__ . '/../../includes/validacoes.php';
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
  header('Location: ' . BASE_URL . '/public/login.php');
  exit;
@@ -23,8 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $novoEmail = $_POST['email_cliente'] ?? '';
     $novaMorada = $_POST['morada_cliente'] ?? '';
     $novoTelefone = $_POST['tel_cliente'] ?? '';
-    if (empty(trim($novoNome))) {
-    $erro = "O nome não pode estar vazio.";
+
+    $erros = validar_nome($novoNome);
+
+    if (!empty($erros)) {
+        $erro = implode(' ', $erros);
     } else {
         try {
             $ligacao = new PDO(
@@ -193,11 +197,13 @@ $ligacao = null;
                             </button>
                         </div>
      <!-- Área de erros -->
-                            <?php if (!empty($erro)): ?>
+                            <?php if (!empty($erros)): ?>
                                 <div class="alert alert-danger text-center" role="alert">
-                                    <?= htmlspecialchars($erro) ?>
+                                    <?php foreach ($erros as $erro): ?>
+                                        <div><?= htmlspecialchars($erro) ?></div>
+                                    <?php endforeach; ?>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif; ?> 
                         </div>
                     </form>
                 </div>
