@@ -9,3 +9,6 @@ define('MYSQL_DATABASE', 'isep-ginasio');
 define('MYSQL_USERNAME', 'sibdas2025');
 define('MYSQL_PASSWORD', '3LduNkJe55lVk0iaQRXvV0j1tZpA7OW5');
 define('MYSQL_AES_KEY', '');
+define('OPENSSL_METHOD', 'AES-256-CBC'); // Algoritmo simétrico robusto
+define('OPENSSL_KEY', 'H0SDRQzIGqclX2kbYBk9xspdn9U5f3Wa'); // Chave de 32 caracteres
+define('OPENSSL_IV', 'BzKAbjuREsHgnw56'); 

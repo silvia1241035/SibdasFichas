@@ -1,10 +1,20 @@
+<?php
+require_once __DIR__ . '/../../includes/funcoes.php';
+redirect_if_not_logged();
+if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
+ header('Location: ' . BASE_URL . '/public/login.php');
+ exit;
+}
+$idClient = $_GET['id_cliente'] ?? null;
+if (!$idClient) {
+ header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');
+ exit;
+}
+echo ($idClient);
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
-
-<?php
-
-require_once __DIR__ . '/../../includes/funcoes.php';
-redirect_if_not_logged();?>
 <?php require_once __DIR__ . '/../../../config/config.php';?>
 <?php include '../../includes/header.php'; ?>
 <!-- favicon -->
@@ -107,7 +117,7 @@ redirect_if_not_logged();?>
  
        <!--Botões-->
                         <div class="d-flex justify-content-end gap-2 mb-4">
-                            <a href="lista.html" class="btn btn-outline-secondary">
+                            <a href="lista.php" class="btn btn-outline-secondary">
                                 <i class="fa-solid fa-xmark me-1"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary">
