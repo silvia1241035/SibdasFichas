@@ -5,6 +5,38 @@
 require_once __DIR__ . '/../../includes/funcoes.php';
 redirect_if_not_logged();?>
 <?php require_once __DIR__ . '/../../../config/config.php';?>
+
+<?php 
+$idClientEncrypted = $_GET['id_cliente'] ?? null;
+$idClient = aes_decrypt($idClientEncrypted);
+if (!$idClient || !is_numeric($idClient)) {
+    header('Location: ' . BASE_URL . '/private/views/clientes/lista.php');  
+    exit;
+}
+
+try {
+    $ligacao = new PDO(
+        "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",  MYSQL_USERNAME,
+        MYSQL_PASSWORD
+    );
+    $stmt = $ligacao->prepare("SELECT * FROM clientes WHERE id = :id"); 
+    $stmt->bindParam(':id', $idClient, PDO::PARAM_INT);
+    $stmt->execute();
+    $cliente = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    if (!$cliente) {
+        echo "<p class='text-danger'>Cliente não encontrado.</p>";
+        exit;
+    } 
+} catch (PDOException $e) {
+    echo "<p class='text-danger'>Erro: " . $e->getMessage() . "</p>";
+    exit;
+}
+
+
+
+
+?>
 <?php include '../../includes/header.php'; ?>
 <!-- favicon -->
  <link rel="shortcut icon" href="../../assets/img/gym125.png" type="image/png">
