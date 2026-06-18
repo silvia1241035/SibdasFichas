@@ -27,13 +27,6 @@ try {
 }
 
 
-
-
-
-
-
-
-
 ?>
 
 
@@ -69,17 +62,21 @@ try {
                         
                         <p class="mb-2 fs-5">Deseja eliminar o cliente?</p>
                         
-                        <h4 class="mb-4"><strong>João Santos</strong></h4>
+                        <h4 class="mb-4"><strong><?= htmlspecialchars($cliente['nome']) ?></strong></h4>
                         
                         <div class="mb-4">
-                            <span class="d-block mb-1"><i class="fa-solid fa-at me-2"></i><strong>jsantos@gmails.com</strong></span> 
-                            <span class="d-block"><i class="fa-solid fa-phone me-2"></i><strong>93123456</strong></span>
+                            <span class="d-block mb-1">
+                                <i class="fa-solid fa-at me-2"></i>
+                                <strong><?= htmlspecialchars($cliente['email']) ?></strong></span> 
+                            <span class="d-block">
+                                <i class="fa-solid fa-phone me-2"></i>
+                                <strong><?= htmlspecialchars($cliente['telefone']) ?></strong></span>
                         </div>
                         <div class="d-flex justify-content-center gap-3">
-                            <a href="lista.html" class="btn btn-outline-secondary px-4">
+                            <a href="lista.php" class="btn btn-outline-secondary px-4">
                                 <i class="fa-solid fa-xmark me-2"></i>Não
                             </a>
-                            <a href="#" class="btn btn-danger px-4">
+                            <a href="confirmar_apagar.php?id_cliente=<?= urlencode($idEncrypted) ?>" class="btn btn-danger px-4">
                                 <i class="fa-solid fa-check me-2"></i>Sim
                             </a>
                         </div>
