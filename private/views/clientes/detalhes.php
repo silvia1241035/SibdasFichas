@@ -69,11 +69,11 @@ try {
  
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nome Completo</label>
-                            <p class="form-control-plaintext">João Silva</p>
+                            <p class="form-control-plaintext"><?= htmlspecialchars($cliente['nome']) ?></p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Morada</label>
-                            <p class="form-control-plaintext">Rua das Flores, nº12, 2º Esq.</p>
+                            <p class="form-control-plaintext"><?= htmlspecialchars($cliente['morada']) ?></p>
                         </div>
                         <div class="row mb-3">
                         <div class="col-md-4">
@@ -82,25 +82,25 @@ try {
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold">Cidade</label>
-                            <p class="form-control-plaintext">Porto</p>
+                            <p class="form-control-plaintext"><?= htmlspecialchars($cliente['cidade']) ?></p>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold">Telefone</label>
-                            <p class="form-control-plaintext">912345678</p>
+                            <p class="form-control-plaintext"><?= htmlspecialchars($cliente['telefone']) ?></p>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Email</label>
-                        <p class="form-control-plaintext">joao.silva@email.pt</p>
+                        <p class="form-control-plaintext"><?= htmlspecialchars($cliente['email']) ?></p>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Sexo</label>
-                            <p class="form-control-plaintext">Masculino</p>
+                            <p class="form-control-plaintext"><?= ($cliente['sexo'] === 'm') ? 'Masculino' : (($cliente['sexo'] === 'f') ? 'Feminino':'Outro') ?></p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Data de nascimento</label>
-                            <p class="form-control-plaintext">1985-07-20</p>
+                            <p class="form-control-plaintext"><?= date('d/m/Y', strtotime($cliente['data_nascimento'])) ?></p>
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -110,7 +110,7 @@ try {
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Sistema de Saúde</label>
-                            <p class="form-control-plaintext">ADSE</p>
+                            <p class="form-control-plaintext"><?= htmlspecialchars($cliente['sistema_saude']) ?> </p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
