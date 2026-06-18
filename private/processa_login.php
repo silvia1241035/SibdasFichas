@@ -16,16 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 // --------------------------------------------------------------------
 // RECOLHA DE DADOS DO FORMULÁRIO
 
-$username = isset($_POST['text_username']) ? trim($_POST['text_username']) : '';
-$password = isset($_POST['text_password']) ? $_POST['text_password'] : '';
-// --------------------------------------------------------------------
-// Guarda o nome de utilizador na sessão para identificar o utilizador autenticado
-$_SESSION['utilizador'] = $username;
-// Redirecionar para a página principal privada
-header('Location: home.php');
-
-
-
 try {
     $ligacao = new PDO(
         "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",  
@@ -33,19 +23,18 @@ try {
         MYSQL_PASSWORD,
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
-    $parametros = [
-        ':u' => $_POST['text_username'],
-        ':p' => $_POST['text_password']
-    ];
-    $comando = $ligacao->prepare("SELECT * FROM agents WHERE name = :u AND passwrd = :p");  
-    $comando->execute($parametros);
-    $resultados = $comando->fetchAll(PDO::FETCH_OBJ);
-    if (count($resultados) === 0) {
+    $comando = $ligacao->prepare(" SELECT *, AES_DECRYPT(name, :chave) AS email FROM agents WHERE AES_DECRYPT(name, :chave) = :u");
+    $comando->execute([
+        ':chave' => MYSQL_AES_KEY,
+        ':u' => $_POST['text_username']
+    ]);
+    $agente = $comando->fetch(PDO::FETCH_OBJ);
+// 2. Verifica se o utilizador existe e se a password está correta
+    if (!$agente || $_POST['text_password'] !== $agente->passwrd) {
         $_SESSION['server_error'] = 'Login inválido';
         header('Location: ../public/login.php');
         return;
     }
-    $agente = $resultados[0];
  // Atualizar last_login
     $stmt = $ligacao->prepare("UPDATE agents SET last_login = NOW() WHERE id = ?");  
     $stmt->execute([$agente->id]);
