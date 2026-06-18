@@ -64,7 +64,13 @@ try {
                     <div class="card-body">
                         
                         <h2 class="mb-4">
-                            <strong><i class="fa-solid fa-user me-2"></i> Detalhes do Cliente</strong> </h2>
+                            <strong><i class="fa-solid fa-user me-2"></i> Detalhes do Cliente</strong> 
+                            <?php if ($cliente['cliente_ativo'] == 1): ?>
+                                <span class="badge bg-success">Ativo</span>
+                            <?php else: ?>
+                                <span class="badge bg-secondary">Inativo</span>
+                            <?php endif; ?>
+                        </h2>        
                         <hr>
  
                         <div class="mb-3">
@@ -114,7 +120,7 @@ try {
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <a href="lista.html" class="btn btn-outline-secondary">
+                        <a href="lista.php" class="btn btn-outline-secondary">
                             <i class="fa-solid fa-arrow-left me-1"></i> Voltar
                         </a>
                     </div>
